@@ -1,5 +1,5 @@
 import express from "express";
-import { registerUser, loginUser, updateProfile } from "../controllers/authController.js";
+import { registerUser, loginUser, updateProfile, getUserProfile } from "../controllers/authController.js";
 import upload from "../middleware/uploadmiddleware.js";
 import { check } from "express-validator";
 import protect from "../middleware/authMiddleware.js";
@@ -35,4 +35,7 @@ router.put(
   upload.single("profileImage"),
   updateProfile
 );
+
+// Fetch User Profile
+router.get("/profile", protect, getUserProfile);
 export default router;
