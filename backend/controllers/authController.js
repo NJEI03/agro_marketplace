@@ -22,12 +22,12 @@ export const registerUser = async (req, res) => {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    // const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = await User.create({
       name,
       email,
-      password: hashedPassword,
+      password,  //no need to hash password here
       phone,
       role,
       location,
@@ -54,7 +54,7 @@ export const loginUser = async (req, res) => {
     if (!user) return res.status(400).json({ message: "Invalid credentials" });
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
+    if (!isMatch) return res.status(400).json({ message: "Invalid pass" });
 
     const token = jwt.sign(
       { id: user.id, role: user.role },
@@ -67,3 +67,41 @@ export const loginUser = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
+//Update profile controller 
+export const updateProfile = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { name, email, phone, location, password } = req.body;
+    let updatedFields = {};
+
+    // Check if user exists
+    const user = await User.findByPk(userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    // Update fields if provided
+    if (name) updatedFields.name = name;
+    if (email) updatedFields.email = email;
+    if (phone) updatedFields.phone = phone;
+    if (location) updatedFields.location = location;
+
+    // If user uploads a new profile picture
+    if (req.file) {
+      updatedFields.profileImage = `/uploads/${req.file.filename}`;
+    }
+
+    // If user wants to update password
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      updatedFields.password = hashedPassword;
+    }
+
+    // Update user in database
+    await user.update(updatedFields);
+
+    res.status(200).json({ message: "Profile updated successfully", user });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+

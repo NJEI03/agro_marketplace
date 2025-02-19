@@ -1,7 +1,8 @@
 import express from "express";
-import { registerUser, loginUser } from "../controllers/authController.js";
+import { registerUser, loginUser, updateProfile } from "../controllers/authController.js";
 import upload from "../middleware/uploadmiddleware.js";
 import { check } from "express-validator";
+import protect from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
@@ -27,4 +28,11 @@ router.post(
   loginUser
 );
 
+// Update Profile (Protected Route)
+router.put(
+  "/update",
+  protect,
+  upload.single("profileImage"),
+  updateProfile
+);
 export default router;

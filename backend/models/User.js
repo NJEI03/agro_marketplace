@@ -45,6 +45,7 @@ const User = sequelize.define(
 
   },
   {
+    tableName: "users", // Define table name
     timestamps: true, // Adds createdAt & updatedAt
     hooks: {
       beforeCreate: async (user) => {
