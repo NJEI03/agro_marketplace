@@ -80,10 +80,11 @@ export const updateProfile = async (req, res) => {
     if (!user) return res.status(404).json({ message: "User not found" });
 
     // Update fields if provided
-    if (name) updatedFields.name = name;
-    if (email) updatedFields.email = email;
-    if (phone) updatedFields.phone = phone;
-    if (location) updatedFields.location = location;
+    // Update fields if provided
+    if (name && name !== user.name) updatedFields.name = name;
+    if (email && email !== user.email) updatedFields.email = email;
+    if (phone && phone !== user.phone) updatedFields.phone = phone;
+    if (location && location !== user.location) updatedFields.location = location;
 
     // If user uploads a new profile picture
     if (req.file) {
@@ -95,10 +96,18 @@ export const updateProfile = async (req, res) => {
       const hashedPassword = await bcrypt.hash(password, 10);
       updatedFields.password = hashedPassword;
     }
+   
+     // Ensure the object is not empty before updating
+     if (Object.keys(updatedFields).length === 0) {
+      return res.status(400).json({ message: "No changes detected" });
+    }
+    // Force update the `updatedAt` timestamp
+    updatedFields.updatedAt = new Date();
 
     // Update user in database
+    console.log("Received update request with data:", req.body);
     await user.update(updatedFields);
-
+    
     res.status(200).json({ message: "Profile updated successfully", user });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
