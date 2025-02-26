@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
+  const { login } = useContext(AuthContext);
   const [error,setError] = useState("");
   const navigate = useNavigate();
 
@@ -15,6 +17,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post("http://localhost:3000/api/auth/login", formData);
+        login(response.data.user); // Update user context
       localStorage.setItem("token", response.data.token);
       alert("Login successful");
       navigate("/dashboard"); // Redirect to dashboard (to be created later)

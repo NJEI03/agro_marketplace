@@ -45,6 +45,7 @@ return (
                 <option value="farmer">Farmer</option>
                 <option value="buyer">Buyer</option>
             </select>
+            <input type="file" name="profileImage" onChange={handleChange} />
             <button type="submit">Signup</button>
         </form>
     </div>
