@@ -35,7 +35,7 @@ const User = sequelize.define(
       allowNull: false,
     },
     location: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING,
       allowNull: true,
     }, 
     profileImage: {
@@ -45,7 +45,7 @@ const User = sequelize.define(
 
   },
   {
-    tableName: "users", // Define table name
+    tableName: "Users", // Define table name
     timestamps: true, // Adds createdAt & updatedAt
     hooks: {
       beforeCreate: async (user) => {

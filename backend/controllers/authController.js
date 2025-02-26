@@ -49,12 +49,15 @@ export const loginUser = async (req, res) => {
 
   try {
     const { email, password } = req.body;
-
+    console.log(email
+      ); console.log(password);
     const user = await User.findOne({ where: { email } });
+    console.log("User found:", user);
     if (!user) return res.status(400).json({ message: "Invalid credentials" });
+    console.log(user);
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
+    if (!isMatch) return res.status(400).json({ message: "Invalid Password" });
 
     const token = jwt.sign(
       { id: user.id, role: user.role },

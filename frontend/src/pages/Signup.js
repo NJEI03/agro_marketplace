@@ -10,6 +10,7 @@ const Signup = () => {
     phone: "",
     role: "farmer", // Default role
     location: "",
+    profileImage: "",
   });
   const [error, setError] = useState("");
   const navigate = useNavigate();

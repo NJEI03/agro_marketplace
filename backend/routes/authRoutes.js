@@ -1,6 +1,6 @@
 import express from "express";
 import { registerUser, loginUser, updateProfile, getUserProfile } from "../controllers/authController.js";
-import upload from "../middleware/uploadmiddleware.js";
+import upload from "../middleware/uploadMiddleware.js";
 import { check } from "express-validator";
 import protect from "../middleware/authMiddleware.js";
 

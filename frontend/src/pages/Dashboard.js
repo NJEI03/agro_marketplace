@@ -13,6 +13,7 @@ const Dashboard = () => {
   return (
     <div className="dashboard-container">
       <h2>Welcome, {user.name}!</h2>
+      <img src={user.profileImage} alt={user.name} />
       <p>Email: {user.email}</p>
       <p>Role: {user.role}</p>
       <button onClick={() => { logout(); navigate("/login"); }}>Logout</button>
