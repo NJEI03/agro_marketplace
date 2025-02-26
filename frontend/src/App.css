@@ -36,4 +36,9 @@ button {
   color: white;
   border: none;
   cursor: pointer;
+  width: 20%;
+  border-radius: 12px;
+}
+.home-container button:hover{
+  background-color:rgb(9, 9, 91)
 }

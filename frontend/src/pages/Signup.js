@@ -11,7 +11,7 @@ const Signup = () => {
     role: "farmer", // Default role
     location: "",
   });
-
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   // Handle input changes
@@ -27,27 +27,28 @@ const Signup = () => {
       alert(response.data.message);
       navigate("/login"); // Redirect to login page
     } catch (error) {
-      alert(error.response?.data?.message || "Signup failed");
+      setError(error.response?.data?.message || "Signup failed");
     }
   };
 
-  return (
+return (
     <div className="form-container">
-      <h2>Signup</h2>
-      <form onSubmit={handleSubmit}>
-        <input type="text" name="name" placeholder="Name" onChange={handleChange} required />
-        <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
-        <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
-        <input type="text" name="phone" placeholder="Phone" onChange={handleChange} required />
-        <input type="text" name="location" placeholder="Location" onChange={handleChange} required />
-        <select name="role" onChange={handleChange}>
-          <option value="farmer">Farmer</option>
-          <option value="buyer">Buyer</option>
-        </select>
-        <button type="submit">Signup</button>
-      </form>
+        <h2>Signup</h2>
+        {error && <p className="error-message" style={{ color: "red", marginTop: "10px" }}>{error}</p>}
+        <form onSubmit={handleSubmit}>
+            <input type="text" name="name" placeholder="Name" onChange={handleChange} required />
+            <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
+            <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
+            <input type="text" name="phone" placeholder="Phone" onChange={handleChange} required />
+            <input type="text" name="location" placeholder="Location" onChange={handleChange} required />
+            <select name="role" onChange={handleChange}>
+                <option value="farmer">Farmer</option>
+                <option value="buyer">Buyer</option>
+            </select>
+            <button type="submit">Signup</button>
+        </form>
     </div>
-  );
+);
 };
 
 export default Signup;
